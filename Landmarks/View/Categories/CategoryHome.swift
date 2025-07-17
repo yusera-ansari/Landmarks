@@ -9,6 +9,7 @@ import SwiftUI
 //You use navigation split views along with NavigationLink instances and related modifiers to build hierarchical navigation structures in your app.
 struct CategoryHome: View {
     @Environment(ModelData.self) var modelData
+    @State var showingProfile:Bool = false
     var body: some View {
         NavigationSplitView{
             List{
@@ -26,9 +27,22 @@ struct CategoryHome: View {
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(Visibility.hidden)
             }
-//            .listStyle(.plain)
+            .listStyle(.inset)
             
             .navigationTitle("Featured")
+            .toolbar{
+                Button{
+                   
+                        showingProfile.toggle()
+                    
+                }label: {
+                    Label("User Profile", systemImage: "person.crop.circle")
+                }
+            }
+            .sheet(isPresented: $showingProfile){
+                ProfileHost()
+                                  .environment(modelData)
+            }
         }detail: {
             Text("Select a Landmark")
         }
